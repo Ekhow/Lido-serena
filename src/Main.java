@@ -6,7 +6,12 @@ int proposerChoix() {
     IO.println("4 - Quitter");
     IO.println("--------------------");
 
-    return Integer.parseInt(IO.readln("Faites votre choix : "));
+    try {
+        return Integer.parseInt(IO.readln("Faites votre choix : "));
+
+    } catch (NumberFormatException e) {
+        return 0;
+    }
 }
 
 void main() {
