@@ -1,0 +1,68 @@
+{
+	"dishes": [
+		{
+			"name": "Margherita",
+			"price": 5,
+			"type": "Pizza"
+		},
+		{
+			"name": "Quatro Stagioni",
+			"price": 7,
+			"type": "Pizza"
+		},
+		{
+			"name": "Spaghetti alle vongole",
+			"price": 12,
+			"type": "Pasta"
+		},
+		{
+			"name": "Scaloppina alla milanese",
+			"price": 16,
+			"type": "Secondi"
+		}
+	],
+	"desserts": [
+		{
+			"name": "Tiramisu",
+			"price": 5,
+			"calories": 550
+		},
+		{
+			"name": "Pannacotta",
+			"price": 3,
+			"calories": 400
+		},
+		{
+			"name": "Maxibon",
+			"price": 3,
+			"calories": 700
+		},
+		{
+			"name": "Biscotto",
+			"price": 2,
+			"calories": 500
+		}
+	],
+	"drinks": [
+		{
+			"name": "Acqua naturale",
+			"price": 1,
+			"volume": 100
+		},
+		{
+			"name": "Coca",
+			"price": 2,
+			"volume": 33
+		},
+		{
+			"name": "Birra alla spina",
+			"price": 4,
+			"volume": 50
+		},
+		{
+			"name": "Moretti",
+			"price": 3,
+			"volume": 33
+		}
+	]
+}
