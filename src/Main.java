@@ -1,13 +1,30 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+int proposerChoix() {
+    IO.println("--------------------");
+    IO.println("1 - Afficher les détails des produits");
+    IO.println("2 - Faire payer le client");
+    IO.println("3 - Caisse de secours");
+    IO.println("4 - Quitter");
+    IO.println("--------------------");
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+    return Integer.parseInt(IO.readln("Faites votre choix : "));
+}
+
+void main() {
+    int choix;
+
+    while((choix = proposerChoix()) != 4) {
+        switch(choix) {
+            case 1:
+                IO.println("Détails des produits...");
+                break;
+            case 2:
+                IO.println("Faire payer le client...");
+                break;
+            case 3:
+                IO.println("Caisse de secours...");
+                break;
+            default:
+                IO.println("Choix invalide, veuillez réessayer.");
+        }
     }
 }
