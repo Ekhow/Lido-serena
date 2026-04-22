@@ -7,6 +7,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 
 public class Payement {
@@ -21,7 +22,14 @@ public class Payement {
         /** on doit afficher le ticket de la table i
          *
          */
-        String cheminFichier = "jsonFiles/2.json";
+        Scanner sc = new Scanner(System.in);
+
+        // on choisi le ticket que l'on veut
+        System.out.println("Quel ticket voulez vous ?");
+        int numeroticket = sc.nextInt();
+        String cheminFichier = "jsonFiles/"+numeroticket+".json";
+
+
         try (FileReader fileReader = new FileReader(cheminFichier)) {
             // On récupère le contenu du fichier JSON (ici en Array)
 
@@ -47,7 +55,7 @@ public class Payement {
             System.err.println("ERROR : ");
             System.err.println(e);
 
-        } catch (org.json.simple.parser.ParseException e) {
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
 
@@ -58,7 +66,6 @@ public class Payement {
         /**
          * on veut faire payer en cb , que le serveur accepte le payement pour qu'il se sauvegarde dans un fichier
          */
-        affichageTicket();
         System.out.println("\nPaiement par CB en cours...");
         System.out.println("✅ Paiement CB accepté !");
         //archiverCommande("CB");
@@ -67,7 +74,6 @@ public class Payement {
 
     public void especes() {
 
-        affichageTicket();
         System.out.printf("Montant remis par le client : ");
         System.out.println("✅ Paiement espèces accepté !");
         //archiverCommande("especes");

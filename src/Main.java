@@ -37,25 +37,32 @@ void main() {
             case 1:
                 break;
             case 2:
-                System.out.println("---------------");
-                System.out.println("1 - Voulez-vous afficher le Ticket ?");
-                System.out.println("2 - Payer en CB ");
-                System.out.println("3 - Payer en espece");
-                System.out.println("---------------");
-                int choix1=sc.nextInt();
+                while (true) {
+                    System.out.println("---------------");
+                    System.out.println("1 - Voulez-vous afficher le Ticket ?");
+                    System.out.println("2 - Payer en CB ");
+                    System.out.println("3 - Payer en espece");
+                    System.out.println("4 - Quitter");
+                    System.out.println("---------------");
+                    int choix1 = sc.nextInt();
 
-                while(choix < 1 || choix > 3){ // Verification de l entree utilisateur
-                    System.out.println("Merci de choisir un chiffre entre 1 et 3");
-                    choix= sc.nextInt();
-                }
-                if(choix1 == 1){
-                    payement.affichageTicket();
-                }else if(choix1 == 2){
-                    payement.CB();
-                    break;
-                } else if (choix1 == 3) {
-                    payement.especes();
-                    break;
+                    while (choix1 < 1 || choix1 > 4) { // Verification de l entree utilisateur
+                        System.out.println("Merci de choisir un chiffre entre 1 et 4");
+                        choix1 = sc.nextInt();
+                    }
+                    switch(choix1) {
+                        case 1 :
+                        payement.affichageTicket();
+                        break;
+                        case 2:
+                        payement.CB();
+                        break;
+                        case 3:
+                        payement.especes();
+                        break;
+                        case 4:
+                            break;
+                    }
                 }
             case 3:
                 IO.println("Caisse de secours...");
