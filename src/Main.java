@@ -51,10 +51,10 @@ void main() {
                 if(choix1 == 1){
                     payement.affichageTicket();
                 }else if(choix1 == 2){
-                    //payement.cb();
+                    payement.CB();
                     break;
                 } else if (choix1 == 3) {
-                    //payement.espece();
+                    payement.especes();
                     break;
                 }
             case 3:
