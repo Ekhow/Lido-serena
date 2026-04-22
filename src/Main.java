@@ -42,14 +42,15 @@ void main() {
 
                 break;
             case 2:
-                while (true) {
+                int choix1 = 0;
+                while (choix1 != 4) {
                     System.out.println("---------------");
                     System.out.println("1 - Voulez-vous afficher le Ticket ?");
                     System.out.println("2 - Payer en CB ");
                     System.out.println("3 - Payer en espece");
                     System.out.println("4 - Quitter");
                     System.out.println("---------------");
-                    int choix1 = sc.nextInt();
+                    choix1 = sc.nextInt();
 
                     while (choix1 < 1 || choix1 > 4) { // Verification de l entree utilisateur
                         System.out.println("Merci de choisir un chiffre entre 1 et 4");
@@ -57,16 +58,16 @@ void main() {
                     }
                     switch(choix1) {
                         case 1 :
-                        payement.affichageTicket();
-                        break;
-                        case 2:
-                        payement.CB();
-                        break;
-                        case 3:
-                        payement.especes();
-                        break;
-                        case 4:
+                            payement.affichageTicket();
                             break;
+                        case 2:
+                            payement.CB();
+                            break;
+                        case 3:
+                            payement.especes();
+                            break;
+                        default:
+                            IO.println("Choix invalide, veuillez réessayer.");
                     }
                 }
             case 3:
