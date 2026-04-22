@@ -3,6 +3,8 @@ package models;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -31,13 +33,13 @@ public class Payement {
 
             System.out.println("-----Ticket-----");
             // on affiche la table
-            System.out.println("Table : "+table);
+            System.out.println("Table : " + table);
             //on affiche la date
-            System.out.println("Le : "+date);
+            System.out.println("Le : " + date);
             //on affiche le nombre de personnes
-            System.out.println("Pour : "+nbPersonnes);
+            System.out.println("Pour : " + nbPersonnes);
             //on affiche les produits
-            for(Object produit : products) {
+            for (Object produit : products) {
                 System.out.println("- " + produit);
             }
 
@@ -50,12 +52,45 @@ public class Payement {
         }
 
     }
-    public void CB(){
+
+    public void CB() {
         String cheminFichier = "res/2.json";
         /**
          * on veut faire payer en cb , que le serveur accepte le payement pour qu'il se sauvegarde dans un fichier
          */
+        affichageTicket();
+        System.out.println("\nPaiement par CB en cours...");
+        System.out.println("✅ Paiement CB accepté !");
+        //archiverCommande("CB");
+    }
+
+
+    public void especes() {
+
+        affichageTicket();
+        System.out.printf("Montant remis par le client : ");
+        System.out.println("✅ Paiement espèces accepté !");
+        //archiverCommande("especes");
+
+    }
+
+    private void archiverCommande(String modePaiement) {
+        String cheminArchive = "jsonFiles/archive.json";
+
+        try {
+            // Charger l'archive existante ou créer un tableau vide
+            JSONArray archive = new JSONArray();
+            try (FileReader fileReader = new FileReader(cheminArchive)) {
+                archive = (JSONArray) new JSONParser().parse(fileReader);
+            } catch (IOException e) {
+                // Le fichier n'existe pas encore, on part d'un tableau vide
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 }
-
