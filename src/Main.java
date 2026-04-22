@@ -1,4 +1,5 @@
 import models.Payement;
+import models.Product;
 import models.Servers;
 import java.io.FileReader;
 import java.io.IOException;
@@ -33,8 +34,12 @@ void main() {
 
     while((choix = proposerChoix()) != 5) {
         Payement payement= new Payement();
+        Product product= new Product();
+        
         switch(choix) {
             case 1:
+                product.afficherProduits();
+
                 break;
             case 2:
                 System.out.println("---------------");
