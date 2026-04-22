@@ -1,4 +1,11 @@
+import models.Payement;
 import models.Servers;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 int proposerChoix() {
     IO.println("---------------------------------------");
@@ -18,15 +25,38 @@ int proposerChoix() {
 
 void main() {
     int choix;
+    Scanner sc = new Scanner(System.in);
+    String cheminFichier = "jsonFiles/products.json";
+    JSONParser parser = new JSONParser();
+    //On récupère le contenu du fichier JSON (ici en Object):
+
 
     while((choix = proposerChoix()) != 5) {
+        Payement payement= new Payement();
         switch(choix) {
             case 1:
-                IO.println("Détails des produits...");
                 break;
             case 2:
-                IO.println("Faire payer le client...");
-                break;
+                System.out.println("---------------");
+                System.out.println("1 - Voulez-vous afficher le Ticket ?");
+                System.out.println("2 - Payer en CB ");
+                System.out.println("3 - Payer en espece");
+                System.out.println("---------------");
+                int choix1=sc.nextInt();
+
+                while(choix < 1 || choix > 3){ // Verification de l entree utilisateur
+                    System.out.println("Merci de choisir un chiffre entre 1 et 3");
+                    choix= sc.nextInt();
+                }
+                if(choix1 == 1){
+                    payement.affichageTicket();
+                }else if(choix1 == 2){
+                    //payement.cb();
+                    break;
+                } else if (choix1 == 3) {
+                    //payement.espece();
+                    break;
+                }
             case 3:
                 IO.println("Caisse de secours...");
                 break;
