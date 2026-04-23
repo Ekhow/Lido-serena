@@ -66,10 +66,11 @@ void main() {
                         case 3:
                             payement.especes();
                             break;
-                        default:
-                            IO.println("Choix invalide, veuillez réessayer.");
+                        case 4:
+                            IO.println("Retour au menu principal");
                     }
                 }
+                break;
             case 3:
                 IO.println("Caisse de secours...");
                 break;
