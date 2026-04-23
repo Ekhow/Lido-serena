@@ -39,6 +39,7 @@ void main() {
         switch(choix) {
             case 1:
                 product.afficherProduits();
+                product.afficher_details();
 
                 break;
             case 2:
