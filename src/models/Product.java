@@ -80,7 +80,13 @@ public class Product { //Affichage des produit et affichage des détailles
             System.out.println("Choisissez parmi ses  "+ (dishesListJSON.size()+ dessertsListJSON.size()+ drinksListJSON.size()) + " Produits différent." );
             int choixAfficherDetails = sc.nextInt();
 
-            if (choixAfficherDetails <= dishesListJSON.size()){
+
+
+            if ((choixAfficherDetails < dishesListJSON.size() && choixAfficherDetails != 1 ) || (choixAfficherDetails > (dishesListJSON.size() + dessertsListJSON.size() + drinksListJSON.size()))) {
+                System.out.println("Il hexiste pas de produit correspondant a cette saisie: "+ choixAfficherDetails);
+                //Permet déviter une erreur si mauvais nombre entrée
+
+            }else if (choixAfficherDetails <= dishesListJSON.size()){
                 //On récupère chaque Plats de la liste dishes
                     JSONObject dishesJSON = (JSONObject) dishesListJSON.get(choixAfficherDetails - 1);
                     String nomPlat = (String) dishesJSON.get("name");
@@ -88,8 +94,8 @@ public class Product { //Affichage des produit et affichage des détailles
                     String typePlat = (String) dishesJSON.get("type");
 
                     System.out.println("--"+ nomPlat+ "--");
-                    System.out.println(" Prix: " + prixPlat + " euros.");
-                    System.out.println("  Type: " + typePlat);
+                    System.out.println("Prix: " + prixPlat + "e");
+                    System.out.println("Type: " + typePlat);
 
             }else if (choixAfficherDetails <= (dishesListJSON.size() + dessertsListJSON.size())) { //(dishesListJSON.size() + dessertsListJSON.size())
                 //On récupère chaque Desserts de la liste desserts
@@ -99,8 +105,8 @@ public class Product { //Affichage des produit et affichage des détailles
                     int calorieDessert = (int) ((long) dessertsJSON.get("calories"));
 
                     System.out.println("--" + nomDessert + "--");
-                    System.out.println(" Prix: " + prixDessert + "euros.");
-                    System.out.println(" Calories: " + calorieDessert);
+                    System.out.println("Prix: " + prixDessert + "e");
+                    System.out.println("Calories: " + calorieDessert);
 
 
             }else {   //On récupère chaque Boissons de la liste drinks
@@ -111,8 +117,8 @@ public class Product { //Affichage des produit et affichage des détailles
 
 
                     System.out.println("--" + nomBoisson+ "--");
-                    System.out.println(" Prix: " + prixBoisson + "euros.");
-                    System.out.println(" Volume: " + volumeBoisson + "cl ");
+                    System.out.println("Prix: " + prixBoisson + "e");
+                    System.out.println("Volume: " + volumeBoisson + "cl ");
             }
 
 
