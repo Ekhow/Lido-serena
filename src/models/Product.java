@@ -84,18 +84,35 @@ public class Product { //Affichage des produit et affichage des détailles
                 //On récupère chaque Plats de la liste dishes
                     JSONObject dishesJSON = (JSONObject) dishesListJSON.get(choixAfficherDetails - 1);
                     String nomPlat = (String) dishesJSON.get("name");
-                    System.out.println(nomPlat);
+                    int prixPlat = (int) ((long) dishesJSON.get("price"));
+                    String typePlat = (String) dishesJSON.get("type");
+
+                    System.out.println("--"+ nomPlat+ "--");
+                    System.out.println(" Prix: " + prixPlat + " euros.");
+                    System.out.println("  Type: " + typePlat);
 
             }else if (choixAfficherDetails <= (dishesListJSON.size() + dessertsListJSON.size())) { //(dishesListJSON.size() + dessertsListJSON.size())
                 //On récupère chaque Desserts de la liste desserts
                     JSONObject dessertsJSON = (JSONObject) dessertsListJSON.get(((choixAfficherDetails) - (dishesListJSON.size()))-1);
                     String nomDessert = (String) dessertsJSON.get("name");
-                    System.out.println(nomDessert);
+                    int prixDessert = (int) ((long) dessertsJSON.get("price"));
+                    int calorieDessert = (int) ((long) dessertsJSON.get("calories"));
+
+                    System.out.println("--" + nomDessert + "--");
+                    System.out.println(" Prix: " + prixDessert + "euros.");
+                    System.out.println(" Calories: " + calorieDessert);
+
 
             }else {   //On récupère chaque Boissons de la liste drinks
                     JSONObject drinksJSON = (JSONObject) drinksListJSON.get((choixAfficherDetails - (dessertsListJSON.size()+ drinksListJSON.size()))-1);
                     String nomBoisson = (String) drinksJSON.get("name");
-                    System.out.println(nomBoisson);
+                    int prixBoisson = (int) ((long) drinksJSON.get("price"));
+                    int volumeBoisson = (int) ((long) drinksJSON.get("volume"));
+
+
+                    System.out.println("--" + nomBoisson+ "--");
+                    System.out.println(" Prix: " + prixBoisson + "euros.");
+                    System.out.println(" Volume: " + volumeBoisson + "cl ");
             }
 
 
