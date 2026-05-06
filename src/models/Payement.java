@@ -28,16 +28,43 @@ public class Payement {
         System.out.println("Quel ticket voulez vous ?");
         int numeroticket = sc.nextInt();
         String cheminFichier = "jsonFiles/"+numeroticket+".json";
+        String cheminFichier2 = "jsonFiles/products.json";
+        JSONParser parser = new JSONParser();
 
 
-        try (FileReader fileReader = new FileReader(cheminFichier)) {
+        try (FileReader fileReader = new FileReader(cheminFichier);
+             FileReader carteReader = new FileReader(cheminFichier2)) {
             // On récupère le contenu du fichier JSON (ici en Array)
+            JSONObject carteJSON = (JSONObject) new JSONParser().parse(carteReader);
 
             JSONObject table1JSON = (JSONObject) new JSONParser().parse(fileReader);
             long table = (long) table1JSON.get("tabNum");
             String date = (String) table1JSON.get("date");
             long nbPersonnes = (long) table1JSON.get("nbOfPeople");
             JSONArray products = (JSONArray) table1JSON.get("products");
+            //On récupère le contenu du fichier JSON (ici en Object):
+            JSONObject productsObjectJSON =(JSONObject) new JSONParser().parse(fileReader);
+
+            //On récupère la liste des dishes, desserts et drinks
+            JSONArray dishesListJSON = (JSONArray) productsObjectJSON.get("dishes");
+            JSONArray dessertsListJSON = (JSONArray) productsObjectJSON.get("desserts");
+            JSONArray drinksListJSON = (JSONArray) productsObjectJSON.get("drinks");
+            double prix = ((Number) productsObjectJSON.get("price")).doubleValue();
+
+            double total = 0.0;
+            for (Object produit : products) {
+                // On cherche le prix dans chaque catégorie de la carte
+                double prix1 = 0.0;
+                for (String categorie : new String[]{"dishes", "desserts", "drinks"}) {
+                    for (Object item : (JSONArray) carteJSON.get(categorie)) {
+                        JSONObject itemJSON = (JSONObject) item;
+                        if (itemJSON.get("name").equals(produit)) {
+                            prix1 = ((Number) itemJSON.get("price")).doubleValue();
+                        }
+                    }
+                }
+
+                }
 
             System.out.println("-----Ticket-----");
             // on affiche la table
@@ -50,6 +77,9 @@ public class Payement {
             for (Object produit : products) {
                 System.out.println("- " + produit);
             }
+            System.out.println("----------------");
+            System.out.printf("TOTAL : %.2f€%n", total);
+
 
         } catch (IOException e) {
             System.err.println("ERROR : ");
