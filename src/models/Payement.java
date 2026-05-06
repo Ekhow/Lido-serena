@@ -92,20 +92,20 @@ public class Payement {
     }
 
     public void CB() {
-        String cheminFichier = "res/2.json";
+        String cheminFichier3 = "res/2.json";
         /**
          * on veut faire payer en cb , que le serveur accepte le payement pour qu'il se sauvegarde dans un fichier
          */
-        System.out.println("\nPaiement par CB en cours...");
-        System.out.println("✅ Paiement CB accepté !");
+        System.out.println("Paiement par CB en cours...");
+        System.out.println("Paiement CB accepté !");
         //archiverCommande("CB");
     }
 
 
     public void especes() {
 
-        System.out.printf("Montant remis par le client : ");
-        System.out.println("✅ Paiement espèces accepté !");
+        System.out.println("Montant remis par le client : ");
+        System.out.println(" Paiement espèces accepté !");
         //archiverCommande("especes");
 
     }
