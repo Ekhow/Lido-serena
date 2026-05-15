@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class CaisseSecours {
 
-    public void lancer() throws Exception {
+    public void lancer() catch Exception {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Numero de table : ");
