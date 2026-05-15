@@ -1,6 +1,4 @@
-import models.Payement;
-import models.Product;
-import models.Servers;
+import models.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,6 +33,7 @@ void main() {
     while((choix = proposerChoix()) != 5) {
         Payement payement= new Payement();
         Product product= new Product();
+        CaisseSecours cassedes= new CaisseSecours();
         
         switch(choix) {
             case 1:
@@ -73,7 +72,7 @@ void main() {
                 }
                 break;
             case 3:
-                new CaisseSecours().lancer();
+                cassedes.lancer();
                 break;
             case 4:
                 Servers.afficher();
