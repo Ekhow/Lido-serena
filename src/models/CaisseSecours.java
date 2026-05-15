@@ -12,41 +12,52 @@ import java.util.Scanner;
 
 public class CaisseSecours {
 
-    public void lancer() catch Exception {
-        Scanner sc = new Scanner(System.in);
+    public void lancer() {
+        try {
+            Scanner sc = new Scanner(System.in);
 
-        System.out.print("Numero de table : ");
-        int numeroTable = sc.nextInt();
-        System.out.print("Nombre de personnes : ");
-        int nbPersonnes = sc.nextInt();
+            System.out.print("Numero de table : ");
+            int numeroTable = sc.nextInt();
+            System.out.print("Nombre de personnes : ");
+            int nbPersonnes = sc.nextInt();
 
-        // Chargement du catalogue
-        JSONObject products = (JSONObject) new JSONParser().parse(new FileReader("jsonFiles/products.json"));
-        JSONArray dishes   = (JSONArray) products.get("dishes");
-        JSONArray drinks   = (JSONArray) products.get("drinks");
-        JSONArray desserts = (JSONArray) products.get("desserts");
+            // On charge le fichier products.json
+            FileReader fileReader = new FileReader("jsonFiles/products.json");
+            JSONParser parser = new JSONParser();
+            JSONObject products = (JSONObject) parser.parse(fileReader);
 
-        List<JSONObject> commande = new ArrayList<>();
+            // On récupère les 3 listes
+            JSONArray dishes   = (JSONArray) products.get("dishes");
+            JSONArray drinks   = (JSONArray) products.get("drinks");
+            JSONArray desserts = (JSONArray) products.get("desserts");
 
-        // Sélection des produits par catégorie
-        choisirProduits(sc, "Plats",    dishes,   commande);
-        choisirProduits(sc, "Boissons", drinks,   commande);
-        choisirProduits(sc, "Desserts", desserts, commande);
+            // Liste des produits choisis par le caissier
+            List commande = new ArrayList();
 
-        // Calcul et affichage du total
-        double total = 0;
-        System.out.println("\n--- Récapitulatif ---");
-        for (JSONObject p : commande) {
-            System.out.println("- " + p.get("name") + " : " + p.get("price") + "e");
-            total += ((Number) p.get("price")).doubleValue();
+            // On fait choisir les produits catégorie par catégorie
+            choisirProduits(sc, "Plats",    dishes,   commande);
+            choisirProduits(sc, "Boissons", drinks,   commande);
+            choisirProduits(sc, "Desserts", desserts, commande);
+
+            // Calcul du total et affichage
+            double total = 0;
+            System.out.println("\n--- Récapitulatif ---");
+            for (int i = 0; i < commande.size(); i++) {
+                JSONObject p = (JSONObject) commande.get(i);
+                System.out.println("- " + p.get("name") + " : " + p.get("price") + "e");
+                total += ((Number) p.get("price")).doubleValue();
+            }
+            System.out.printf("TOTAL : %.2f e%n", total);
+
+            // Archivage
+            archiverCommande(numeroTable, nbPersonnes, commande, total);
+
+        } catch (Exception e) {
+            System.err.println("Erreur : " + e.getMessage());
         }
-        System.out.printf("TOTAL : %.2f e%n", total);
-
-        // Archivage
-        archiverCommande(numeroTable, nbPersonnes, commande, total);
     }
 
-    private void choisirProduits(Scanner sc, String categorie, JSONArray liste, List<JSONObject> commande) {
+    private void choisirProduits(Scanner sc, String categorie, JSONArray liste, List commande) {
         System.out.println("\n-- " + categorie + " --");
         for (int i = 0; i < liste.size(); i++) {
             JSONObject item = (JSONObject) liste.get(i);
@@ -73,30 +84,36 @@ public class CaisseSecours {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private void archiverCommande(int table, int nbPersonnes, List<JSONObject> produits, double total) throws Exception {
+    private void archiverCommande(int table, int nbPersonnes, List commande, double total) throws Exception {
+        // On charge l'archive existante ou on crée un tableau vide
         JSONArray archive = new JSONArray();
         try {
-            archive = (JSONArray) new JSONParser().parse(new FileReader("jsonFiles/archive.json"));
+            FileReader fr = new FileReader("jsonFiles/archive.json");
+            JSONParser parser = new JSONParser();
+            archive = (JSONArray) parser.parse(fr);
         } catch (Exception e) {
-            // fichier vide ou inexistant, on repart d'un tableau vide
+            // Le fichier n'existe pas encore, on continue avec un tableau vide
         }
 
-        JSONObject commande = new JSONObject();
-        commande.put("table", (long) table);
-        commande.put("nbPersonnes", (long) nbPersonnes);
-        commande.put("total", total);
+        // On crée l'objet commande à archiver
+        JSONObject commandeJSON = new JSONObject();
+        commandeJSON.put("table", (long) table);
+        commandeJSON.put("nbPersonnes", (long) nbPersonnes);
+        commandeJSON.put("total", total);
 
+        // On ajoute les produits
         JSONArray produitsArray = new JSONArray();
-        for (JSONObject p : produits) {
+        for (int i = 0; i < commande.size(); i++) {
+            JSONObject p = (JSONObject) commande.get(i);
             JSONObject item = new JSONObject();
             item.put("name", p.get("name"));
             item.put("price", p.get("price"));
             produitsArray.add(item);
         }
-        commande.put("produits", produitsArray);
-        archive.add(commande);
+        commandeJSON.put("produits", produitsArray);
 
+        // On ajoute la commande à l'archive et on écrit le fichier
+        archive.add(commandeJSON);
         FileWriter fw = new FileWriter("jsonFiles/archive.json");
         fw.write(archive.toJSONString());
         fw.flush();
