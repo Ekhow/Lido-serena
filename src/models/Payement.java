@@ -49,7 +49,6 @@ public class Payement {
             JSONArray dishesListJSON = (JSONArray) productsObjectJSON.get("dishes");
             JSONArray dessertsListJSON = (JSONArray) productsObjectJSON.get("desserts");
             JSONArray drinksListJSON = (JSONArray) productsObjectJSON.get("drinks");
-            double prix = ((Number) productsObjectJSON.get("price")).doubleValue();
 
             double total = 0.0;
             for (Object produit : products) {
@@ -59,7 +58,7 @@ public class Payement {
                     for (Object item : (JSONArray) carteJSON.get(categorie)) {
                         JSONObject itemJSON = (JSONObject) item;
                         if (itemJSON.get("name").equals(produit)) {
-                            prix1 = ((Number) itemJSON.get("price")).doubleValue();
+                            double prix1 = ((Number) itemJSON.get("price")).doubleValue();
                         }
                     }
                 }
@@ -75,7 +74,7 @@ public class Payement {
             System.out.println("Pour : " + nbPersonnes);
             //on affiche les produits
             for (Object produit : products) {
-                System.out.println("- " + produit);
+                System.out.println("- " + produit+"___"+prixproduit);
             }
             System.out.println("----------------");
             System.out.printf("TOTAL : %.2f€%n", total);
