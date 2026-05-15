@@ -73,7 +73,7 @@ void main() {
                 }
                 break;
             case 3:
-                IO.println("Caisse de secours...");
+                new CaisseSecours().lancer();
                 break;
             case 4:
                 Servers.afficher();
