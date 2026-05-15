@@ -1,9 +1,4 @@
 import models.*;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 int proposerChoix() {
@@ -28,6 +23,8 @@ void main() {
     String cheminFichier = "jsonFiles/products.json";
     JSONParser parser = new JSONParser();
     //On récupère le contenu du fichier JSON (ici en Object):
+    double table = 0;
+    double total = 0;
 
 
     while((choix = proposerChoix()) != 5) {
@@ -58,13 +55,16 @@ void main() {
                     }
                     switch(choix1) {
                         case 1 :
+                            double[] infos = payement.affichageTicket();
+                            table = infos[0];
+                            total = infos[1];
                             payement.affichageTicket();
                             break;
                         case 2:
-                            payement.CB();
+                            payement.CB(table,total);
                             break;
                         case 3:
-                            payement.especes();
+                            payement.especes(table,total);
                             break;
                         case 4:
                             IO.println("Retour au menu principal");

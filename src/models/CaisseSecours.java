@@ -3,16 +3,18 @@ package models;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class CaisseSecours {
 
-    public void lancer() catch Exception {
+    public void lancer(){
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Numero de table : ");
@@ -21,7 +23,14 @@ public class CaisseSecours {
         int nbPersonnes = sc.nextInt();
 
         // Chargement du catalogue
-        JSONObject products = (JSONObject) new JSONParser().parse(new FileReader("jsonFiles/products.json"));
+        JSONObject products = null;
+        try {
+            products = (JSONObject) new JSONParser().parse(new FileReader("jsonFiles/products.json"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         JSONArray dishes   = (JSONArray) products.get("dishes");
         JSONArray drinks   = (JSONArray) products.get("drinks");
         JSONArray desserts = (JSONArray) products.get("desserts");
@@ -43,7 +52,11 @@ public class CaisseSecours {
         System.out.printf("TOTAL : %.2f e%n", total);
 
         // Archivage
-        archiverCommande(numeroTable, nbPersonnes, commande, total);
+        try {
+            archiverCommande(numeroTable, nbPersonnes, commande, total);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void choisirProduits(Scanner sc, String categorie, JSONArray liste, List<JSONObject> commande) {
