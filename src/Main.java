@@ -13,7 +13,7 @@ int proposerChoix() {
     IO.println("1 - Afficher les détails des produits");
     IO.println("2 - Faire payer le client");
     IO.println("3 - Caisse de secours");
-    IO.println("4 - Gérer les serveurs");
+    IO.println("4 - Afficher les serveurs");
     IO.println("5 - Quitter");
     IO.println("---------------------------------------");
 
@@ -71,38 +71,11 @@ void main() {
                     }
                 }
             case 3:
-                int gererServeursChoix;
+                IO.println("Caisse de secours...");
                 break;
             case 4:
-                Servers servers = new Servers();
-
-                while ((gererServeursChoix = Servers.proposerChoix()) != 4) {
-                    switch (gererServeursChoix) {
-                        case 1:
-                            Servers.afficher();
-                            break;
-                        case 2:
-                            String nomServeur = IO.readln("Entrez le nom du serveur à ajouter : ");
-                            try {
-                                servers.ajouterServeur(nomServeur);
-                                IO.println("Serveur ajouté avec succès !");
-                            } catch (RuntimeException e) {
-                                IO.println(e.getMessage());
-                            }
-                            break;
-                        case 3:
-                            String nomServeurRetirer = IO.readln("Entrez le nom du serveur à retirer : ");
-                            try {
-                                servers.retirerServeur(nomServeurRetirer);
-                                IO.println("Serveur retiré avec succès !");
-                            } catch (RuntimeException e) {
-                                IO.println(e.getMessage());
-                            }
-                            break;
-                        default:
-                            IO.println("Choix invalide, veuillez réessayer.");
-                    }
-                }
+                Servers.afficher();
+                break;
             default:
                 IO.println("Choix invalide, veuillez réessayer.");
         }
