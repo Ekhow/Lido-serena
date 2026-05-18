@@ -1,11 +1,4 @@
-import models.Payement;
-import models.Product;
-import models.Servers;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import models.*;
 import org.json.simple.parser.JSONParser;
 
 int proposerChoix() {
@@ -13,7 +6,7 @@ int proposerChoix() {
     IO.println("1 - Afficher les détails des produits");
     IO.println("2 - Faire payer le client");
     IO.println("3 - Caisse de secours");
-    IO.println("4 - Afficher les serveurs");
+    IO.println("4 - Gérer les serveurs");
     IO.println("5 - Quitter");
     IO.println("---------------------------------------");
 
@@ -30,15 +23,19 @@ void main() {
     String cheminFichier = "jsonFiles/products.json";
     JSONParser parser = new JSONParser();
     //On récupère le contenu du fichier JSON (ici en Object):
+    double table = 0;
+    double total = 0;
 
 
     while((choix = proposerChoix()) != 5) {
         Payement payement= new Payement();
         Product product= new Product();
-        
+        CaisseSecours cassedes= new CaisseSecours();
+
         switch(choix) {
             case 1:
                 product.afficherProduits();
+                product.afficher_details();
 
                 break;
             case 2:
@@ -58,23 +55,45 @@ void main() {
                     }
                     switch(choix1) {
                         case 1 :
+                            double[] infos = payement.affichageTicket();
+                            table = infos[0];
+                            total = infos[1];
                             payement.affichageTicket();
                             break;
                         case 2:
-                            payement.CB();
+                            payement.CB(table,total);
                             break;
                         case 3:
-                            payement.especes();
+                            payement.especes(table,total);
+                            break;
+                        case 4:
+                            IO.println("Retour au menu principal");
+                    }
+                }
+                break;
+            case 3:
+                cassedes.lancer();
+                break;
+            case 4:
+                int serveursChoix;
+
+                while ((serveursChoix = Servers.proposerChoix()) != 4) {
+                    switch (serveursChoix) {
+                        case 1:
+                            Servers.afficher();
+                            break;
+                        case 2:
+                            String nomServeur = IO.readln("Entrez le nom du serveur à ajouter : ");
+                            new Servers().ajouterServeur(nomServeur);
+                            break;
+                        case 3:
+                            String nomServeurRetirer = IO.readln("Entrez le nom du serveur à retirer : ");
+                            new Servers().retirerServeur(nomServeurRetirer);
                             break;
                         default:
                             IO.println("Choix invalide, veuillez réessayer.");
                     }
                 }
-            case 3:
-                IO.println("Caisse de secours...");
-                break;
-            case 4:
-                Servers.afficher();
                 break;
             default:
                 IO.println("Choix invalide, veuillez réessayer.");

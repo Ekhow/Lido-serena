@@ -1,7 +1,1 @@
-[
-  {
-    "nom": "David",
-    "totalEncaisse": 0,
-    "pourboire": 0
-  }
-]
+[{"totalEncaisse":0,"nom":"David","pourboire":0}]
