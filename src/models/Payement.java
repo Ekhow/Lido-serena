@@ -33,7 +33,7 @@ public class Payement {
 
 
         long table = 0;
-        double total = 0;
+        float total = 0;
         try (FileReader fileReader = new FileReader(cheminFichier);
              FileReader carteReader = new FileReader(cheminFichier2)) {
             // On récupère le contenu du fichier JSON (ici en Array)
@@ -85,6 +85,21 @@ public class Payement {
             System.out.println("TOTAL :" + total);
             System.out.println("----------------");
 
+            System.out.println("Choisir le serveur :");
+            String serveur = sc.next();
+            if (Servers.serveurExiste(serveur)) {
+                System.out.println("Choisissez un pourboire :");
+                float pourboire =  sc.nextFloat();
+
+                if (pourboire < 0) {
+                    System.out.println("Le pourboire ne peut pas être négatif. Aucun pourboire ajouté.");
+                    pourboire = 0;
+                }
+                Servers.pourboire(serveur, pourboire);
+                Servers.encaisser(serveur, (float) total);
+            } else {
+                System.out.println("Serveur non reconnu, paiement sans serveur.");
+            }
 
         } catch (IOException e) {
             System.err.println("ERROR : ");
