@@ -18,8 +18,23 @@ public class Servers {
         }
     }
 
+    public static int proposerChoix() {
+        IO.println("---------- Gérer les serveurs -----------");
+        IO.println("1 - Afficher les serveurs");
+        IO.println("2 - Ajouter un serveur");
+        IO.println("3 - Retirer un serveur");
+        IO.println("4 - Retour au menu");
+        IO.println("---------------------------------------");
+
+        try {
+            return Integer.parseInt(IO.readln("Faites votre choix : "));
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
     public static void afficher() {
-        JSONArray serveurs = (JSONArray) parseJson();
+        JSONArray serveurs = parseJson();
 
         if (serveurs.isEmpty()) {
             IO.println("Aucun serveur trouvé.");
@@ -35,11 +50,67 @@ public class Servers {
         IO.println("---------------------------------------");
     }
 
+    public void ajouterServeur(String nom) {
+        JSONArray serveurs = parseJson();
+
+        if (serveurExiste(nom)) {
+            throw new RuntimeException("Le serveur " + nom + " existe déjà !");
+        }
+
+        JSONObject nouveauServeur = new JSONObject();
+        nouveauServeur.put("nom", nom);
+        nouveauServeur.put("totalEncaisse", 0.0f);
+        nouveauServeur.put("totalPourboire", 0.0f);
+
+        serveurs.add(nouveauServeur);
+
+        try (FileWriter fileWriter = new FileWriter("jsonFiles/servers.json")) {
+            fileWriter.write(serveurs.toJSONString());
+            fileWriter.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void retirerServeur(String nom) {
+        JSONArray serveurs = parseJson();
+
+        if (!serveurExiste(nom)) {
+            throw new RuntimeException("Le serveur " + nom + " n'existe pas");
+        }
+
+        serveurs.removeIf(obj -> {
+            JSONObject serveur = (JSONObject) obj;
+            return serveur.get("nom").equals(nom);
+        });
+
+        try (FileWriter fileWriter = new FileWriter("jsonFiles/servers.json")) {
+            fileWriter.write(serveurs.toJSONString());
+            fileWriter.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean serveurExiste(String nom) {
+        JSONArray serveurs = parseJson();
+
+        for (Object obj : serveurs) {
+            JSONObject serveur = (JSONObject) obj;
+
+            if (serveur.get("nom").equals(nom)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void encaisser(String nomServeur, float montant) {
-        JSONArray serveurs = (JSONArray) parseJson();
+        JSONArray serveurs = parseJson();
 
         if (serveurs.isEmpty()) {
-            throw new RuntimeException("Le serveur n'existe pas.");
+            throw new RuntimeException("Il n'existe pas de serveur !");
         }
 
         for (Object obj : serveurs) {
@@ -57,5 +128,30 @@ public class Servers {
                 }
             }
         }
+    }
+
+    public void pourboire(String nomServeur, float montant) {
+        JSONArray serveurs = parseJson();
+
+        if (serveurs.isEmpty()) {
+            throw new RuntimeException("Il n'existe pas de serveur !");
+        }
+
+        for (Object obj : serveurs) {
+            JSONObject serveur = (JSONObject) obj;
+            String nom = (String) serveur.get("nom");
+
+            if (nom.equals(nomServeur)) {
+                try (FileWriter fileWriter = new FileWriter("jsonFiles/servers.json")) {
+                    float totalPourboire = ((Number) serveur.get("totalPourboire")).floatValue();
+                    serveur.put("totalPourboire", totalPourboire + montant);
+                    fileWriter.write(serveurs.toJSONString());
+                    fileWriter.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
     }
 }
