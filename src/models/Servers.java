@@ -45,12 +45,14 @@ public class Servers {
         for (Object obj : serveurs) {
             JSONObject serveur = (JSONObject) obj;
             String nom = (String) serveur.get("nom");
-            IO.println("- " + nom);
+            double totalEncaisse = (double) serveur.get("totalEncaisse");
+            double totalPourboire = (double) serveur.get("totalPourboire");
+            IO.println("- " + nom + " | Total encaissé : " + totalEncaisse + " | Total pourboire : " + totalPourboire);
         }
         IO.println("---------------------------------------");
     }
 
-    public void ajouterServeur(String nom) {
+    public static void ajouterServeur(String nom) {
         JSONArray serveurs = parseJson();
 
         if (serveurExiste(nom)) {
@@ -72,7 +74,7 @@ public class Servers {
         }
     }
 
-    public void retirerServeur(String nom) {
+    public static void retirerServeur(String nom) {
         JSONArray serveurs = parseJson();
 
         if (!serveurExiste(nom)) {
@@ -92,7 +94,7 @@ public class Servers {
         }
     }
 
-    public boolean serveurExiste(String nom) {
+    public static boolean serveurExiste(String nom) {
         JSONArray serveurs = parseJson();
 
         for (Object obj : serveurs) {
@@ -106,7 +108,7 @@ public class Servers {
         return false;
     }
 
-    public void encaisser(String nomServeur, float montant) {
+    public static void encaisser(String nomServeur, float montant) {
         JSONArray serveurs = parseJson();
 
         if (serveurs.isEmpty()) {
@@ -130,7 +132,7 @@ public class Servers {
         }
     }
 
-    public void pourboire(String nomServeur, float montant) {
+    public static void pourboire(String nomServeur, float montant) {
         JSONArray serveurs = parseJson();
 
         if (serveurs.isEmpty()) {

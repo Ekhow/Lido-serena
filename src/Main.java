@@ -84,11 +84,11 @@ void main() {
                             break;
                         case 2:
                             String nomServeur = IO.readln("Entrez le nom du serveur à ajouter : ");
-                            new Servers().ajouterServeur(nomServeur);
+                            Servers.ajouterServeur(nomServeur);
                             break;
                         case 3:
                             String nomServeurRetirer = IO.readln("Entrez le nom du serveur à retirer : ");
-                            new Servers().retirerServeur(nomServeurRetirer);
+                            Servers.retirerServeur(nomServeurRetirer);
                             break;
                         default:
                             IO.println("Choix invalide, veuillez réessayer.");
