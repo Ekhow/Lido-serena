@@ -82,8 +82,8 @@ public class Product { //Affichage des produit et affichage des détailles
 
 
 
-            if ((choixAfficherDetails < dishesListJSON.size() && choixAfficherDetails != 1 ) || (choixAfficherDetails > (dishesListJSON.size() + dessertsListJSON.size() + drinksListJSON.size()))) {
-                System.out.println("Il hexiste pas de produit correspondant a cette saisie: "+ choixAfficherDetails);
+            if ((choixAfficherDetails < 1 ) || (choixAfficherDetails > (dishesListJSON.size() + dessertsListJSON.size() + drinksListJSON.size()))) {
+                System.out.println("Il existe pas de produit correspondant a cette saisie: "+ choixAfficherDetails);
                 //Permet déviter une erreur si mauvais nombre entrée
 
             }else if (choixAfficherDetails <= dishesListJSON.size()){
