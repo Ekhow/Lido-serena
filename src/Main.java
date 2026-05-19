@@ -55,15 +55,18 @@ void main() {
                     }
                     switch(choix1) {
                         case 1 :
+                            payement.affichageTicket();
+                            break;
+                        case 2:
                             double[] infos = payement.affichageTicket();
                             table = infos[0];
                             total = infos[1];
-                            //payement.affichageTicket();
-                            break;
-                        case 2:
                             payement.CB(table,total);
                             break;
                         case 3:
+                            double[] infoss = payement.affichageTicket();
+                            table = infoss[0];
+                            total = infoss[1];
                             payement.especes(table,total);
                             break;
                         case 4:
