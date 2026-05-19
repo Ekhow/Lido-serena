@@ -14,8 +14,9 @@ public class Payement {
     /**
      * affichage du ticket
      * calcul du ticket
-     * payer
-     * Payer/espèce
+     * payer CB
+     * Payer espèce
+     * archive commande
      */
     public double[] affichageTicket() {
 
@@ -29,7 +30,7 @@ public class Payement {
         int numeroticket = sc.nextInt();
         String cheminFichier = "jsonFiles/" + numeroticket + ".json";
         String cheminFichier2 = "jsonFiles/products.json";
-        JSONParser parser = new JSONParser();
+        JSONParser parser = new JSONParser(); // passer de JSON a Java
 
 
         long table = 0;
@@ -65,6 +66,7 @@ public class Payement {
                 String nomProduit = (String) produit;
                 double prixProduit = 0.0;
 
+                //Sert à afficher le prix à côté des produits de la commande
                 for (String categorie : new String[]{"dishes", "desserts", "drinks"}) {
                     JSONArray listeCategorie = (JSONArray) carteJSON.get(categorie);
                     for (Object item : listeCategorie) {

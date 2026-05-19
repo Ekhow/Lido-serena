@@ -91,7 +91,7 @@ public class CaisseSecours { // Déclaration de la classe CaisseSecours
         try {
             archive = (JSONArray) new JSONParser().parse(new FileReader("jsonFiles/archive.json")); // Essaie de charger l'archive existante pour ne pas écraser les commandes déjà enregistrées
         } catch (Exception e) {
-          // Le fichier n'existe pas encore, on continue avec le tableau vide
+            // Le fichier n'existe pas encore, on continue avec le tableau vide
         }
 
         JSONObject commande = new JSONObject(); // Crée un objet JSON vide pour la nouvelle commande
