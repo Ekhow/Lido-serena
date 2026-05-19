@@ -5,7 +5,7 @@ import org.json.simple.JSONArray; // Outil pour lire les tableaux JSON [ ]
 import org.json.simple.JSONObject; // Outil pour lire les objets JSON { }
 import org.json.simple.parser.JSONParser; // Outil qui transforme le fichier JSON en objet Java
 import org.json.simple.parser.ParseException; // Gère les erreurs si le JSON est mal formé
- 
+
 import java.io.FileReader; // Pour ouvrir et lire un fichier
 import java.io.FileWriter; // Pour écrire dans un fichier
 import java.io.IOException; // Gère les erreurs liées aux fichiers
@@ -25,38 +25,37 @@ public class CaisseSecours { // Déclaration de la classe CaisseSecours
 
         // Chargement du catalogue
         JSONObject products = null; // Variable vide qui va recevoir le contenu de products.json
-        try {products = (JSONObject) new JSONParser().parse(new FileReader("jsonFiles/products.json")); // Ouvre et transforme products.json en objet Java utilisable
-        JSONArray dishes   = (JSONArray) products.get("dishes"); // Récupère la liste des plats
-        JSONArray drinks   = (JSONArray) products.get("drinks"); // Récupère la liste des boissons
-        JSONArray desserts = (JSONArray) products.get("desserts"); // Récupère la liste des desserts
+        try {
+            products = (JSONObject) new JSONParser().parse(new FileReader("jsonFiles/products.json")); // Ouvre et transforme products.json en objet Java utilisable
+            JSONArray dishes = (JSONArray) products.get("dishes"); // Récupère la liste des plats
+            JSONArray drinks = (JSONArray) products.get("drinks"); // Récupère la liste des boissons
+            JSONArray desserts = (JSONArray) products.get("desserts"); // Récupère la liste des desserts
 
-        List<JSONObject> commande = new ArrayList<>(); // Crée une liste vide pour stocker les produits choisis
+            List<JSONObject> commande = new ArrayList<>(); // Crée une liste vide pour stocker les produits choisis
 
-        // Sélection des produits par catégorie
-        choisirProduits(sc, "Plats",    dishes,   commande); // Fait choisir les plats au caissier
-        choisirProduits(sc, "Boissons", drinks,   commande); // Fait choisir les boissons au caissier
-        choisirProduits(sc, "Desserts", desserts, commande); // Fait choisir les desserts au caissier
+            // Sélection des produits par catégorie
+            choisirProduits(sc, "Plats", dishes, commande); // Fait choisir les plats au caissier
+            choisirProduits(sc, "Boissons", drinks, commande); // Fait choisir les boissons au caissier
+            choisirProduits(sc, "Desserts", desserts, commande); // Fait choisir les desserts au caissier
 
-        // Calcul et affichage du total
-        double total = 0; // Variable qui va stocker le total de la commande, commence à 0, double car nombre à virgule
-        System.out.println("\n--- Récapitulatif ---"); // Affiche le titre du récapitulatif
-        for (JSONObject p : commande) { // Parcourt chaque produit dans la commande
-            System.out.println("- " + p.get("name") + " : " + p.get("price") + "e"); // Affiche le nom et prix du produit, ex: - Margherita : 5e
-            total += ((Number) p.get("price")).doubleValue(); // Ajoute le prix au total, converti en double pour le calcul
+            // Calcul et affichage du total
+            double total = 0; // Variable qui va stocker le total de la commande, commence à 0, double car nombre à virgule
+            System.out.println("\n--- Récapitulatif ---"); // Affiche le titre du récapitulatif
+            for (JSONObject p : commande) { // Parcourt chaque produit dans la commande
+                System.out.println("- " + p.get("name") + " : " + p.get("price") + "e"); // Affiche le nom et prix du produit, ex: - Margherita : 5e
+                total += ((Number) p.get("price")).doubleValue(); // Ajoute le prix au total, converti en double pour le calcul
+            }
+            System.out.printf("TOTAL : %.2f e%n", total); // Affiche le total avec 2 décimales, ex: TOTAL : 43.00 e
+
+            // Archivage
+            try { // On essaye d'archiver la commande
+                archiverCommande(numeroTable, nbPersonnes, commande, total); // Appelle la méthode qui écrit dans archive.json
+            } catch (Exception e) { // Si ça plante
+                throw new RuntimeException(e); // On remonte l'erreur
+            }
+        } catch (Exception e) { // Si le fichier products.json est introuvable ou mal formé
+            System.out.println(e.getMessage()); // Affiche un message d'erreur
         }
-        System.out.printf("TOTAL : %.2f e%n", total); // Affiche le total avec 2 décimales, ex: TOTAL : 43.00 e
-
-        // Archivage
-        try { // On essaye d'archiver la commande 
-            archiverCommande(numeroTable, nbPersonnes, commande, total); // Appelle la méthode qui écrit dans archive.json
-        } catch (Exception e) { // Si ça plante
-            throw new RuntimeException(e); // On remonte l'erreur
-        } catch (IOException e) { // Si le fichier est inaccessible
-            throw new RuntimeException(e); // On remonte l'erreur
-        } catch (ParseException e) { // Si le JSON est mal formé
-            throw new RuntimeException(e); // On remonte l'erreur
-        }
-
     }
 
     private void choisirProduits(Scanner sc, String categorie, JSONArray liste, List<JSONObject> commande) { // Méthode qui gère la sélection d'une catégorie, reçoit le scanner, le nom de la catégorie, la liste des produits et la commande
