@@ -78,7 +78,8 @@ public class Servers {
         JSONArray serveurs = parseJson();
 
         if (!serveurExiste(nom)) {
-            throw new RuntimeException("Le serveur " + nom + " n'existe pas");
+            IO.println("Le serveur " + nom + " n'existe pas !");
+            return;
         }
 
         serveurs.removeIf(obj -> {

@@ -25,7 +25,6 @@ void main() {
     //On récupère le contenu du fichier JSON (ici en Object):
     double table = 0;
     double total = 0;
-    int numero= 0;
 
 
     while((choix = proposerChoix()) != 5) {
@@ -62,15 +61,13 @@ void main() {
                             double[] infos = payement.affichageTicket();
                             table = infos[0];
                             total = infos[1];
-                            numero = (int) infos[2];
-                            payement.CB(table,total,numero);
+                            payement.CB(table,total);
                             break;
                         case 3:
                             double[] infoss = payement.affichageTicket();
                             table = infoss[0];
                             total = infoss[1];
-                            numero = (int) infoss[2];
-                            payement.especes(table,total,numero);
+                            payement.especes(table,total);
                             break;
                         case 4:
                             IO.println("Retour au menu principal");
