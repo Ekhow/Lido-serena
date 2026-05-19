@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Servers {
-    private static JSONArray parseJson() throws RuntimeException {
+    private static JSONArray parseJson() {
         try (FileReader fileReader = new FileReader("jsonFiles/servers.json")) {
             return (JSONArray) new JSONParser().parse(fileReader);
         } catch (ParseException | IOException e) {
@@ -52,7 +52,7 @@ public class Servers {
         IO.println("---------------------------------------");
     }
 
-    public static void ajouterServeur(String nom) throws RuntimeException {
+    public static void ajouterServeur(String nom) {
         JSONArray serveurs = parseJson();
 
         if (nom.trim().isEmpty()) {
@@ -82,7 +82,7 @@ public class Servers {
         }
     }
 
-    public static void retirerServeur(String nom) throws RuntimeException {
+    public static void retirerServeur(String nom) {
         JSONArray serveurs = parseJson();
 
         if (!serveurExiste(nom)) {
@@ -119,7 +119,7 @@ public class Servers {
         return false;
     }
 
-    public static void encaisser(String nomServeur, float montant) throws RuntimeException {
+    public static void encaisser(String nomServeur, float montant) {
         JSONArray serveurs = parseJson();
 
         if (serveurs.isEmpty()) {
@@ -143,7 +143,7 @@ public class Servers {
         }
     }
 
-    public static void pourboire(String nomServeur, float montant) throws RuntimeException {
+    public static void pourboire(String nomServeur, float montant) {
         JSONArray serveurs = parseJson();
 
         if (serveurs.isEmpty()) {
