@@ -161,7 +161,7 @@ public class Payement {
         try {
             archive = (JSONArray) new JSONParser().parse(new FileReader(cheminArchive));
         } catch (Exception e) {
-            // fichier vide ou inexistant, on repart d'un tableau vide
+            // fichier vide ou inexistant, on repart d'un tableau vide.
         }
 
         // 2. On relit le ticket pour récupérer les produits + prix
