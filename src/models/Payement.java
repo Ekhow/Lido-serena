@@ -85,22 +85,6 @@ public class Payement {
             System.out.println("TOTAL :" + total);
             System.out.println("----------------");
 
-            System.out.println("Choisir le serveur :");
-            String serveur = sc.next();
-            if (Servers.serveurExiste(serveur)) {
-                System.out.println("Choisissez un pourboire :");
-                float pourboire =  sc.nextFloat();
-
-                if (pourboire < 0) {
-                    System.out.println("Le pourboire ne peut pas être négatif. Aucun pourboire ajouté.");
-                    pourboire = 0;
-                }
-                Servers.pourboire(serveur, pourboire);
-                Servers.encaisser(serveur, (float) total);
-            } else {
-                System.out.println("Serveur non reconnu, paiement sans serveur.");
-            }
-
         } catch (IOException e) {
             System.err.println("ERROR : ");
             System.err.println(e);
@@ -108,53 +92,118 @@ public class Payement {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        return new double[]{table, total};
+        return new double[]{table, total,numeroticket};
     }
 
 
 
 
-    public void CB(double table, double total) {
+    public void CB(double table, double total,int numero) {
         String cheminFichier3 = "res/2.json";
         /**
          * on veut faire payer en cb , que le serveur accepte le payement pour qu'il se sauvegarde dans un fichier
          */
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Choisir le serveur :");
+        String serveur = sc.next();
+        if (Servers.serveurExiste(serveur)) {
+            System.out.println("Choisissez un pourboire :");
+            float pourboire =  sc.nextFloat();
 
+            if (pourboire < 0) {
+                System.out.println("Le pourboire ne peut pas être négatif. Aucun pourboire ajouté.");
+                pourboire = 0;
+            }
+            Servers.pourboire(serveur, pourboire);
+            Servers.encaisser(serveur, (float) total);
+        } else {
+            System.out.println("Serveur non reconnu, paiement sans serveur.");
+        }
         System.out.println("Paiement par CB en cours...");
         System.out.println("Paiement CB accepté !");
-        archiverCommande(table, total, "CB");
+        archiverCommande(table, total, "CB",numero);
     }
 
 
-    public void especes(double table, double total) {
+    public void especes(double table, double total,int numero) {
 
         Scanner sc = new Scanner(System.in);
+        System.out.println("Choisir le serveur :");
+        String serveur = sc.next();
+        if (Servers.serveurExiste(serveur)) {
+            System.out.println("Choisissez un pourboire :");
+            float pourboire =  sc.nextFloat();
+
+            if (pourboire < 0) {
+                System.out.println("Le pourboire ne peut pas être négatif. Aucun pourboire ajouté.");
+                pourboire = 0;
+            }
+            Servers.pourboire(serveur, pourboire);
+            Servers.encaisser(serveur, (float) total);
+        } else {
+            System.out.println("Serveur non reconnu, paiement sans serveur.");
+        }
         System.out.println("Montant remis par le client : ");
         int remis = sc.nextInt();
         double remise = total - remis;
         System.out.println("Remise pour le client : " + remise);
         System.out.println(" Paiement espèces accepté !");
-        archiverCommande(table, total, "ESPECE");
+        archiverCommande(table, total, "ESPECE",numero);
 
     }
 
-    private void archiverCommande(double table1, double total1, String modePaiement) {
+    private void archiverCommande(double table1, double total1, String modePaiement,int numero_json) {
         String cheminArchive = "jsonFiles/archive.json";
         JSONArray archive = new JSONArray();
-        JSONParser parser = new JSONParser();
 
+
+        // 1. On lit l'archive existante si elle existe
         try {
-            archive = (JSONArray) new JSONParser().parse(new FileReader("jsonFiles/archive.json"));
+            archive = (JSONArray) new JSONParser().parse(new FileReader(cheminArchive));
         } catch (Exception e) {
             // fichier vide ou inexistant, on repart d'un tableau vide
         }
+
+        // 2. On relit le ticket pour récupérer les produits + prix
+        JSONArray detailCommande = new JSONArray();
+        try (FileReader commandeReader = new FileReader("jsonFiles/" + numero_json + ".json");
+             FileReader carteReader = new FileReader("jsonFiles/products.json")) {
+
+            JSONObject commandeJSON = (JSONObject) new JSONParser().parse(commandeReader);
+            JSONObject carteJSON = (JSONObject) new JSONParser().parse(carteReader);
+            JSONArray products = (JSONArray) commandeJSON.get("products");
+
+            for (Object produit : products) {
+                double prix = 0.0;
+                for (String categorie : new String[]{"dishes", "desserts", "drinks"}) {
+                    for (Object item : (JSONArray) carteJSON.get(categorie)) {
+                        JSONObject itemJSON = (JSONObject) item;
+                        if (itemJSON.get("name").equals(produit)) {
+                            prix = ((Number) itemJSON.get("price")).doubleValue();
+                        }
+                    }
+                }
+                // On crée un objet {nom, prix} pour chaque produit
+                JSONObject ligne = new JSONObject();
+                ligne.put("produit", produit);
+                ligne.put("prix", prix);
+                detailCommande.add(ligne);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la lecture du ticket : " + e.getMessage());
+        }
+
+        // 3. On construit l'objet archive complet
         JSONObject sauvegarde = new JSONObject();
         sauvegarde.put("table", table1);
         sauvegarde.put("total", total1);
         sauvegarde.put("modePaiement", modePaiement);
+        sauvegarde.put("commande", detailCommande); // ← le détail du ticket
 
         archive.add(sauvegarde);
 
+        // 4. On écrit dans archive.json
         try (java.io.FileWriter writer = new java.io.FileWriter(cheminArchive)) {
             writer.write(archive.toJSONString());
             writer.flush();
