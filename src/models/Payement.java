@@ -119,7 +119,7 @@ public class Payement {
         /**
          * on veut faire payer en cb , que le serveur accepte le payement pour qu'il se sauvegarde dans un fichier
          */
-        affichageTicket();
+
         System.out.println("Paiement par CB en cours...");
         System.out.println("Paiement CB accepté !");
         archiverCommande(table, total, "CB");
@@ -129,7 +129,6 @@ public class Payement {
     public void especes(double table, double total) {
 
         Scanner sc = new Scanner(System.in);
-        affichageTicket();
         System.out.println("Montant remis par le client : ");
         int remis = sc.nextInt();
         double remise = total - remis;

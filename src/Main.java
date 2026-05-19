@@ -58,7 +58,7 @@ void main() {
                             double[] infos = payement.affichageTicket();
                             table = infos[0];
                             total = infos[1];
-                            payement.affichageTicket();
+                            //payement.affichageTicket();
                             break;
                         case 2:
                             payement.CB(table,total);
