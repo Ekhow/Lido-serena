@@ -85,22 +85,6 @@ public class Payement {
             System.out.println("TOTAL :" + total);
             System.out.println("----------------");
 
-            System.out.println("Choisir le serveur :");
-            String serveur = sc.next();
-            if (Servers.serveurExiste(serveur)) {
-                System.out.println("Choisissez un pourboire :");
-                float pourboire =  sc.nextFloat();
-
-                if (pourboire < 0) {
-                    System.out.println("Le pourboire ne peut pas être négatif. Aucun pourboire ajouté.");
-                    pourboire = 0;
-                }
-                Servers.pourboire(serveur, pourboire);
-                Servers.encaisser(serveur, (float) total);
-            } else {
-                System.out.println("Serveur non reconnu, paiement sans serveur.");
-            }
-
         } catch (IOException e) {
             System.err.println("ERROR : ");
             System.err.println(e);
@@ -119,7 +103,22 @@ public class Payement {
         /**
          * on veut faire payer en cb , que le serveur accepte le payement pour qu'il se sauvegarde dans un fichier
          */
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Choisir le serveur :");
+        String serveur = sc.next();
+        if (Servers.serveurExiste(serveur)) {
+            System.out.println("Choisissez un pourboire :");
+            float pourboire =  sc.nextFloat();
 
+            if (pourboire < 0) {
+                System.out.println("Le pourboire ne peut pas être négatif. Aucun pourboire ajouté.");
+                pourboire = 0;
+            }
+            Servers.pourboire(serveur, pourboire);
+            Servers.encaisser(serveur, (float) total);
+        } else {
+            System.out.println("Serveur non reconnu, paiement sans serveur.");
+        }
         System.out.println("Paiement par CB en cours...");
         System.out.println("Paiement CB accepté !");
         archiverCommande(table, total, "CB");
@@ -129,6 +128,21 @@ public class Payement {
     public void especes(double table, double total) {
 
         Scanner sc = new Scanner(System.in);
+        System.out.println("Choisir le serveur :");
+        String serveur = sc.next();
+        if (Servers.serveurExiste(serveur)) {
+            System.out.println("Choisissez un pourboire :");
+            float pourboire =  sc.nextFloat();
+
+            if (pourboire < 0) {
+                System.out.println("Le pourboire ne peut pas être négatif. Aucun pourboire ajouté.");
+                pourboire = 0;
+            }
+            Servers.pourboire(serveur, pourboire);
+            Servers.encaisser(serveur, (float) total);
+        } else {
+            System.out.println("Serveur non reconnu, paiement sans serveur.");
+        }
         System.out.println("Montant remis par le client : ");
         int remis = sc.nextInt();
         double remise = total - remis;
