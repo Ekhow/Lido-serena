@@ -55,8 +55,14 @@ public class Servers {
     public static void ajouterServeur(String nom) {
         JSONArray serveurs = parseJson();
 
+        if (nom.trim().isEmpty()) {
+            IO.println("Le nom du serveur ne peut pas être vide !");
+            return;
+        }
+
         if (serveurExiste(nom)) {
-            throw new RuntimeException("Le serveur " + nom + " existe déjà !");
+            IO.println("Le serveur " + nom + " existe déjà !");
+            return;
         }
 
         JSONObject nouveauServeur = new JSONObject();
