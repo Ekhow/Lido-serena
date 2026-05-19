@@ -25,7 +25,7 @@ public class Payement {
         Scanner sc = new Scanner(System.in);
 
         // on choisi le ticket que l'on veut
-        System.out.println("Quel ticket voulez vous ?");
+        System.out.println("Quel ticket voulez-vous ?");
         int numeroticket = sc.nextInt();
         String cheminFichier = "jsonFiles/" + numeroticket + ".json";
         String cheminFichier2 = "jsonFiles/products.json";

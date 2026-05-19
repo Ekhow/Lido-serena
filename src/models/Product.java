@@ -31,7 +31,7 @@ public class Product { //Affichage des produit et affichage des détailles
             int num = 1;
 
             //On affiche la liste de produit numéroté à partir de 1
-            System.out.println("Voicie la liste des produits numéroter de 1 à " + (dishesListJSON.size()+ dessertsListJSON.size()+ drinksListJSON.size()));
+            System.out.println("Voici la liste des produits numérotée de 1 à " + (dishesListJSON.size()+ dessertsListJSON.size()+ drinksListJSON.size()));
 
             //On récupère chaque Plats de la liste dishes et on les affiches
             for(int i = 0; i < dishesListJSON.size(); i++) {
@@ -77,13 +77,13 @@ public class Product { //Affichage des produit et affichage des détailles
             JSONArray drinksListJSON = (JSONArray) productsObjectJSON.get("drinks");
 
             //On demande à l'utilisateur qu'elle numéro de de Produit souhaite t'il connaitre plus de détais
-            System.out.println("Choisissez parmi ses  "+ (dishesListJSON.size()+ dessertsListJSON.size()+ drinksListJSON.size()) + " Produits différent." );
+            System.out.println("Choisissez parmi ces  "+ (dishesListJSON.size()+ dessertsListJSON.size()+ drinksListJSON.size()) + " produits différents." );
             int choixAfficherDetails = sc.nextInt();
 
 
 
             if ((choixAfficherDetails < 1 ) || (choixAfficherDetails > (dishesListJSON.size() + dessertsListJSON.size() + drinksListJSON.size()))) {
-                System.out.println("Il existe pas de produit correspondant a cette saisie: "+ choixAfficherDetails);
+                System.out.println("Il n'existe pas de produit correspondant a cette saisie: "+ choixAfficherDetails);
                 //Permet déviter une erreur si mauvais nombre entrée
 
             }else if (choixAfficherDetails <= dishesListJSON.size()){
