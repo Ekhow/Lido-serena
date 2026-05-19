@@ -75,6 +75,8 @@ public class Servers {
         try (FileWriter fileWriter = new FileWriter("jsonFiles/servers.json")) {
             fileWriter.write(serveurs.toJSONString());
             fileWriter.flush();
+
+            IO.println("Le serveur " + nom + " a été ajouté avec succès !");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -96,6 +98,8 @@ public class Servers {
         try (FileWriter fileWriter = new FileWriter("jsonFiles/servers.json")) {
             fileWriter.write(serveurs.toJSONString());
             fileWriter.flush();
+
+            IO.println("Le serveur " + nom + " a été retiré avec succès !");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
