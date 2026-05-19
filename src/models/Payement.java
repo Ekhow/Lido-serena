@@ -143,9 +143,17 @@ public class Payement {
         } else {
             System.out.println("Serveur non reconnu, paiement sans serveur.");
         }
-        System.out.println("Montant remis par le client : ");
-        int remis = sc.nextInt();
-        double remise = total - remis;
+        double remise = -1.0;
+
+        while (remise < 0) {
+            System.out.println("Montant remis par le client : ");
+            int remis = sc.nextInt();
+            remise = remis - total;
+
+            if  (remise < 0) {
+                IO.println("Le montant remis est insuffisant, il manque " + (-remise) + " euros. Veuillez entrer un montant suffisant.");
+            }
+        }
         System.out.println("Remise pour le client : " + remise);
         System.out.println(" Paiement espèces accepté !");
         archiverCommande(table, total, "ESPECE",numero);
